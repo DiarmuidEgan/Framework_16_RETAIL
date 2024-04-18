@@ -41,10 +41,20 @@ public static function form_select_team($pageID){
     return $form;
 } 
 
-public static function form_select_match($pageID){
+/**
+ * get form for match
+ * @param $pageID the page to post the form to
+ */
+public static function form_select_match($pageID, $selectTeam1, $selectTeam2){
     $form='<form method="post" action="index.php?pageID='.$pageID.'">';
     $form.='<div class="form-group">';
-    $form.='<label for="productCode">Enter a match</label><input type="text" class="form-control" id="m_code" name="m_code">';
+    
+    $form.='<label for="match-id">Enter a match id</label><input type="text" class="form-control"  name="match-id">';
+    $form.='<label for="match-date">Enter a match date</label><input type="date" class="form-control"  name="match-date">';
+    $form.='<label for="match-result">Enter result</label><input type="text" class="form-control"  name="match-result">';
+    $form.='<label for="match-team1">Enter team1</label>'.$selectTeam1;
+    $form.='<label for="match-team2">Enter team2</label>'.$selectTeam2;
+
     $form.='</div> ';
     $form.='<button type="submit" class="btn btn-default" value="TRUE" name="btnTeamSelect">Select</button>';
     $form.='</form>';

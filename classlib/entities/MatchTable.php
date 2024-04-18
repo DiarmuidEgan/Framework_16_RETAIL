@@ -27,21 +27,23 @@ class MatchTable extends TableEntity {
     
     
     
-    public function CreateMatch($team1, $team2, $dateAndTime){
+    public function CreateMatch($team1, $team2, $dateAndTime, $Result){
         
         
-        $this->SQL="INSERT INTO `k00283736_framework_16`.`matches`
+        $this->SQL="INSERT INTO `matches`
                         (
                         `team1_id`,
                         `team2_id`,
-                        `scheduled_date`)
+                        `scheduled_date`,
+                        `result`)
                         VALUES
                         (
                         ".$team1.",
                         ".$team2.",
-                        '".$dateAndTime."');
+                        '".$dateAndTime."',
+                        '".$Result."'
+                             );
                         ";  
-        //echo $this->SQL;
         //execute the  query
         try {
             $rs=$this->db->query($this->SQL);
