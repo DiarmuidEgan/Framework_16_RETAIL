@@ -74,7 +74,7 @@ class CRUDMatch extends PanelModel
         $this->panelContent_1 = HelperHTML::generateTABLE($rs);
     }
 
-    function getSelectInput($resultsSet, $selectName, $selectedValue)
+    public function getSelectInput($resultsSet, $selectName, $selectedValue)
     {
         $select = "<select name='$selectName' class='form-control'>";
         while ($row = $resultsSet->fetch_assoc()) {
@@ -91,20 +91,63 @@ class CRUDMatch extends PanelModel
     }
     public function getTeams()
     {
-        $sql="SELECT * FROM teams;";
+        $sql = "SELECT * FROM teams;";
         return $this->db->query($sql);
-
     }
-    
+
     public function createMatch()
     {
-        $teamsRs1 =$this->getTeams();
-        $selectTeam1=$this->getSelectInput($teamsRs1, "match-team1", "");
-        $teamsRs2 =$this->getTeams();
-        $selectTeam2=$this->getSelectInput($teamsRs2, "match-team2", "");
+
+        $teamsRs1 = $this->getTeams();
+        $selectTeam1 = $this->getSelectInput($teamsRs1, "match-team1", "");
+        $teamsRs2 = $this->getTeams();
+        $selectTeam2 = $this->getSelectInput($teamsRs2, "match-team2", "");
 
         $this->panelContent_1 = Form::form_select_match($this->pageID, $selectTeam1, $selectTeam2);
-        
+    }
+    public function getMatchUpdatePage()
+    {
+        // $queries = array();
+        // parse_str($_SERVER['QUERY_STRING'], $queries);
+
+        // $matchId= $queries["match-id"];
+        // $matchTable = new MatchTable($this->db);
+        // $match = $matchTable->getRecordByID($matchId);
+        // var_dump($match);
+
+
+        $date="";
+        $result="";
+        $this->panelContent_1 = Form::form_update_match_id($this->pageID);
+
+        if(isset($_POST["btnTeamSelect"]))
+        {
+            $this->panelContent_2 = "<h1>new match</h1>";
+            $matchId = $_POST["match-id"];
+            $MT = new MatchTable($this->db);
+            $match = $MT->getRecordByID($matchId);
+            
+            if($match)
+            {
+                $teamsRs1 =$this->getTeams();
+                $selectTeam1=$this->getSelectInput($teamsRs1, "match-team1", $match["team1_id"]);
+                $teamsRs2 =$this->getTeams();
+                $selectTeam2=$this->getSelectInput($teamsRs2, "match-team2",$match["team2_id"]);
+                $this->panelContent_2 = Form::form_update_match($this->pageID,
+                                                                $matchId ,
+                                                                $selectTeam1,
+                                                                $selectTeam2,
+                                                                $match["scheduled_date"],
+                                                                $match["result"]);
+            }
+            
+            //public static function form_update_match($pageID, $selectTeam1, $selectTeam2, $date="", $result=""){
+
+        }
+        else if(isset($_POST["btnTeamUpdate"]))
+        {
+
+        }
     }
 
     /**
@@ -115,7 +158,7 @@ class CRUDMatch extends PanelModel
         switch ($this->pageID) {
             case "createMatch":
                 $this->createMatch();
-                 break;
+                break;
 
             case "viewMatch":
                 $this->viewMatches();
@@ -124,10 +167,12 @@ class CRUDMatch extends PanelModel
             case "deleteMatch":
                 $this->panelContent_1 = Form::form_select_id($this->pageID);
                 break;
+            
 
             case "updateMatch":
-                $this->panelContent_1 = Form::form_update_match($this->pageID);
-                $this->panelContent_2 = "<h1>new match</h1>";
+
+                $this->getMatchUpdatePage();
+
                 break;
         }
     }

@@ -49,7 +49,6 @@ public static function form_select_match($pageID, $selectTeam1, $selectTeam2){
     $form='<form method="post" action="index.php?pageID='.$pageID.'">';
     $form.='<div class="form-group">';
     
-    $form.='<label for="match-id">Enter a match id</label><input type="text" class="form-control"  name="match-id">';
     $form.='<label for="match-date">Enter a match date</label><input type="date" class="form-control"  name="match-date">';
     $form.='<label for="match-result">Enter result</label><input type="text" class="form-control"  name="match-result">';
     $form.='<label for="match-team1">Enter team1</label>'.$selectTeam1;
@@ -62,17 +61,32 @@ public static function form_select_match($pageID, $selectTeam1, $selectTeam2){
 } 
 
 
-public static function form_update_match($pageID, $t1="", $t2="", $date=""){
+public static function form_update_match_id($pageID){
     $form='<form method="post" action="index.php?pageID='.$pageID.'">';
     $form.='<div class="form-group">';
-    $form.='<label >Enter match id</label><input type="text" class="form-control" id="t_code" name="m_code" value="'.$t1.'">';
-    $form.='<label >Enter team id 1</label><input type="text" class="form-control" id="t_code" name="t1_code" value="'.$t1.'">';
-    $form.='<label >Enter team id 2</label><input type="text" class="form-control" id="t_code" name="t2_code" value="'.$t2.'">';
-    $form.='<label >Enter a date and time</label><input type="text" class="form-control" id="t_code" name="date_code" value="'.$date.'">';
 
-    
+   
+    $form.='<label for="match-id">Enter a match id</label><input type="text" class="form-control"  name="match-id">';
+
     $form.='</div> ';
     $form.='<button type="submit" class="btn btn-default" value="TRUE" name="btnTeamSelect">Select</button>';
+    $form.='</form>';
+    return $form;
+} 
+
+public static function form_update_match($pageID, $matchId, $selectTeam1, $selectTeam2, $date="", $result=""){
+    $form='<form method="post" action="index.php?pageID='.$pageID.'">';
+    $form.='<div class="form-group">';
+
+   
+    $form.='<input type="hidden" class="form-control"  name="match-id" value="'.$matchId.'">';
+    $form.='<label for="match-date">Enter a match date</label><input type="date" class="form-control"  name="match-date" value="'.$date.'">';
+    $form.='<label for="match-result">Enter result</label><input type="text" class="form-control"  name="match-result" value="'.$result.'">';
+    $form.='<label for="match-team1">Enter team1</label>'.$selectTeam1;
+    $form.='<label for="match-team2">Enter team2</label>'.$selectTeam2;
+    
+    $form.='</div> ';
+    $form.='<button type="submit" class="btn btn-default" value="TRUE" name="btnTeamUpdate">Select</button>';
     $form.='</form>';
     return $form;
 } 
